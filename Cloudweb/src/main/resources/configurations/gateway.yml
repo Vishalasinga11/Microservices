@@ -1,0 +1,24 @@
+eureka:
+  client:
+    register-with-eureka: false
+server:
+  port: 8999
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true  # ensure service IDs are treated as case-insensitive
+      routes:
+        - id: districtservice
+          uri: lb://districtservice  # use lb:// for service discovery by name
+          predicates:
+            - Path=/district/**
+        - id: stateservice
+          uri: lb://stateservice     # use lb:// for service discovery by name
+          predicates:
+            - Path=/state/**
